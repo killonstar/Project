@@ -114,12 +114,12 @@ WeightCOOL <- function(n1,n2){
   return(weightper.basall)
 }
 
-PriceInfo <- function(n1,n2)
+PriceInfo <- function(n1,n2,n3,n4)
 {
   ob.mean.bas1 <- as.data.frame(as.list(colMeans(n1, na.rm = T))) # mean.bas1
   ob.mean.bas2 <- as.data.frame(as.list(colMeans(n2, na.rm = T))) # mean.bas1
-  ob.price1 <- round(ob.mean.bas1, digits = 3) * writing1 # Цена первой корзины с учетом лотов для фьючерсов # price1
-  ob.price2 <- round(ob.mean.bas2, digits = 3) * writing2 # Цена второй корзины с учетом лотов для фьючерсов # price2
+  ob.price1 <- round(ob.mean.bas1, digits = 3) * n3 # Цена первой корзины с учетом лотов для фьючерсов # price1
+  ob.price2 <- round(ob.mean.bas2, digits = 3) * n4 # Цена второй корзины с учетом лотов для фьючерсов # price2 
   ob.sum.meanall <- rowSums(ob.price1) + rowSums(ob.price2) # Общая сумма цен с лотами в двух корзинах # sum.meanall
   x <- ls()
   vec <- grep("ob.", x) %>% x[.]
@@ -133,11 +133,11 @@ PriceInfo <- function(n1,n2)
 }
 
 # Создание комбинации и объединение корзин
-FunCOMBIN <- function(){
-  length.basaall <- length(tickers1) + length(tickers2) # Количество инструментов в корзинах
+FunCOMBIN <- function(n1,n2,n3,n4){
+  length.basaall <- length(n1) + length(n2) # Количество инструментов в корзинах
   meanbas.all <- list() # Empty list
-  m1 <- price.info[[3]]
-  m2 <- price.info[[4]]
+  m1 <- n3
+  m2 <- n4
   meanbas.all <- round(unlist(list.append(meanbas.all, m1, m2)), digits = 3) # Объединение двух корзин в вектор
   lotik <- seq(1,8,by=1) # Создание комбинации
   combin <- matrix(rep(lotik, length.basaall), ncol = length.basaall)
