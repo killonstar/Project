@@ -181,7 +181,7 @@ Result <- function(n1,n2){
 }
 
 # Спред
-Spread <- function(){
+Spread <- function(list1,writing1,lot.spread1,list2,writing2,lot.spread2){
   bas1.sum <- as.data.frame(list1) # Date.frame
   bas1.sum <- data.frame(mapply(`*`,bas1.sum,writing1)) # Корректируем цены для фьючерсов
   bas1.sum <- data.frame(mapply(`*`,bas1.sum,lot.spread1)) # Умножаем на количество лотов, которые мы выбрали для первой корзины

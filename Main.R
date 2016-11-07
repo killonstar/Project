@@ -71,4 +71,4 @@ lot <- FunCOMBIN(tickers1,tickers2,price.info[[3]],price.info[[4]]) # Табли
 # Вывести tickers1 и tickers2
 lot.spread1 <- c(5,1) # Указываем количество лотов, которые мы выбрали для первой корзины
 lot.spread2 <- c(1) # Указываем количество лотов, которые мы выбрали для второй корзины
-Spread() # График (тоже вывести)
+Spread(list1,writing1,lot.spread1,list2,writing2,lot.spread2) # График (тоже вывести)
