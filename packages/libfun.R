@@ -197,5 +197,5 @@ Spread <- function(list1,writing1,lot.spread1,list2,writing2,lot.spread2){
   min.spread <- min(basall.spread[,1]); max.spread <- max(basall.spread[,1])
   mean.spread <- c(min.spread, max.spread)
   mean.spread <- abs(mean(mean.spread)) # Средний спред
-  abline(h = mean.spread, col = "red", lw = 2) # Линия среднего спреда на графике
+  #abline(h = mean.spread, col = "red", lw = 2) # Линия среднего спреда на графике
 }

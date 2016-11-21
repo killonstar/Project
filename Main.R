@@ -37,20 +37,20 @@ incr.bas2 <- Increment(list2) # Приращение второй корзины
 incr.index <- Increment(list3) # Приращение индекса
 var.index <- as.numeric(lapply(incr.index, function(x) var(x))) # Дисперсия индекса
 
-covar.bas1 <- Covar(incr.bas1) # Ковариация первой корзины
-covar.bas2 <- Covar(incr.bas2) # Ковариация второй корзины
+covar.bas1 <- Covar(incr.index, incr.bas1) # Ковариация первой корзины
+covar.bas2 <- Covar(incr.index, incr.bas2) # Ковариация второй корзины
 
-beta.bas1 <- lapply(covar.bas1, function(x) Beta(x)) # Беты первой корзины
-beta.bas2 <- lapply(covar.bas2, function(x) Beta(x)) # Беты второй корзины
+beta.bas1 <- lapply(covar.bas1, function(x) Beta(x, var.index)) # Беты первой корзины
+beta.bas2 <- lapply(covar.bas2, function(x) Beta(x, var.index)) # Беты второй корзины
 
 irrfac <- Irr(tickers1,tickers2) # Коэффициент неравномерности
 sum.betaall <- Summa(beta.bas1, beta.bas2) # Общая сумма бет в двух корзинах
-inter.bas1 <- Inter2(beta.bas1,beta.bas2) # Расчет корзин
-inter.bas2 <- Inter4(beta.bas1,beta.bas2) # Расчет корзин
+inter.bas1 <- Inter2(beta.bas1,beta.bas2, sum.betaall, irrfac) # Расчет корзин
+inter.bas2 <- Inter4(beta.bas1,beta.bas2, sum.betaall, irrfac) # Расчет корзин
 
 # сумма весов двух корзин
 sum.weightall <- Summa(inter.bas1, inter.bas2) # Общая сумма весов в двух корзинах
-weightper.basall <- WeightCOOL(inter.bas1,inter.bas2) # Идеальный вес в процентах
+weightper.basall <- WeightCOOL(inter.bas1,inter.bas2,inter.bas1,inter.bas2,tickers1,tickers2, sum.weightall) # Идеальный вес в процентах
 
 # Спецификация контрактов (количество лотов)
 tick1 <- tickers1 # 
@@ -65,10 +65,18 @@ price.info <- PriceInfo(list1,list2,writing1,writing2)
 
 # Оптимальное кол-во лотов
 # weightper.basall - вывести для сравнения с lot и выбора оптимальных значений
-lot <- FunCOMBIN(tickers1,tickers2,price.info[[3]],price.info[[4]]) # Таблица оптимальных лотов (вывести)
+lot <- FunCOMBIN(tickers1,tickers2,price.info[[3]],price.info[[4]], weightper.basall) # Таблица оптимальных лотов (вывести)
 
 # Спред
 # Вывести tickers1 и tickers2
-lot.spread1 <- c(5,1) # Указываем количество лотов, которые мы выбрали для первой корзины
-lot.spread2 <- c(1) # Указываем количество лотов, которые мы выбрали для второй корзины
-Spread(list1,writing1,lot.spread1,list2,writing2,lot.spread2) # График (тоже вывести)
+lot.spread1 <- c(2,2) # Указываем количество лотов, которые мы выбрали для первой корзины
+lot.spread2 <- c(5) # Указываем количество лотов, которые мы выбрали для второй корзины
+# Основные параметры (время и период)
+from.date <- "2010-09-26" # Параметр для изменения !!!
+to.date <- "2016-09-26" # Параметр для изменения !!!
+period <- "day" # Параметр для изменения !!!
+# Первая корзина
+list3 <- BasFun1(tickers1,from.date,to.date,period) # Первая корзина
+# Вторая корзина
+list4 <- BasFun1(tickers2,from.date,to.date,period) # Вторая корзина
+Spread(list3,writing1,lot.spread1,list4,writing2,lot.spread2) # График (тоже вывести)
