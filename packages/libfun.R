@@ -26,12 +26,12 @@ Increment <- function(n1){
 }
 
 # Ковариация
-Covar <- function(n1){
+Covar <- function(n1, incr.index){
   cov(incr.index, n1) 
 }
 
 # Беты
-Beta <- function(n1){
+Beta <- function(n1, var.index){
   n1/var.index
 }
 
@@ -57,51 +57,51 @@ Summa <- function(n1,n2){
 } 
 
 # Расчет первой корзины по отношению ко второй
-Inter2 <- function(n1,n2){
+Inter2 <- function(n1,n2, sum.betaall, irrfac){
   x1 <- length(n1)
   x2 <- length(n2)
-  Inter1 <- function(n1){
+  Inter1 <- function(n1, sum.betaall, irrfac){
     sum.betaall/n1*irrfac
   }
   if(x1 < x2){
-    z <- lapply(n1, function(x) Inter1(x))
+    z <- lapply(n1, function(x) Inter1(x, sum.betaall, irrfac))
   }
   else
   {
-    z <- lapply(n2, function(x) Inter1(x))
+    z <- lapply(n2, function(x) Inter1(x, sum.betaall, irrfac))
   }
   return(z)
 }
 
-Inter4 <- function(n1,n2){
+Inter4 <- function(n1,n2, sum.betaall, irrfac){
   x1 <- length(n1)
   x2 <- length(n2)
-  Inter3 <- function(n1){
+  Inter3 <- function(n1, sum.betaall, irrfac){
     sum.betaall/n1
   }
   if(x1 > x2){
-    z <- lapply(n1, function(x) Inter3(x))
+    z <- lapply(n1, function(x) Inter3(x, sum.betaall, irrfac))
   }
   else
   {
-    z <- lapply(n2, function(x) Inter3(x))
+    z <- lapply(n2, function(x) Inter3(x, sum.betaall, irrfac))
   }
   return(z)
 }
 
 # Идеальный вес в процентах
-WeightCOOL <- function(n1,n2){
+WeightCOOL <- function(n1,n2, inter.bas1, inter.bas2, tickers1, tickers2, sum.weightall){
   x1 <- n1
   x2 <- n2
   y1 <- length(inter.bas1)
   y2 <- length(inter.bas2)
   z1 <- length(tickers1)
-  z2 <- length(tickers1)
-  Weightcool <- function(n1){
+  z2 <- length(tickers2)
+  Weightcool <- function(n1, sum.weightall){
     n1/sum.weightall*100
   }
-  weightper.bas1 <- lapply(x1, function(x) Weightcool(x)) 
-  weightper.bas2 <- lapply(x2, function(x) Weightcool(x))
+  weightper.bas1 <- lapply(x1, function(x) Weightcool(x, sum.weightall)) 
+  weightper.bas2 <- lapply(x2, function(x) Weightcool(x, sum.weightall))
   weightper.basall <- list()
   if(y1 == z1){
     weightper.basall <- list.append(weightper.basall, weightper.bas1, weightper.bas2)
@@ -133,7 +133,7 @@ PriceInfo <- function(n1,n2,n3,n4)
 }
 
 # Создание комбинации и объединение корзин
-FunCOMBIN <- function(n1,n2,n3,n4){
+FunCOMBIN <- function(n1,n2,n3,n4, weightper.basall){
   length.basaall <- length(n1) + length(n2) # Количество инструментов в корзинах
   meanbas.all <- list() # Empty list
   m1 <- n3
